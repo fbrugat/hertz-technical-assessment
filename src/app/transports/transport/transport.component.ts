@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TransportService } from 'src/app/shared/transport.service';
 import { NgForm } from '@angular/forms';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-transport',
@@ -12,7 +13,8 @@ export class TransportComponent implements OnInit {
 
   constructor(
     private service: TransportService,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -40,6 +42,7 @@ export class TransportComponent implements OnInit {
     const data = form.value;
     this.firestore.collection('transport').add(data);
     this.resetForm(form);
+    this.toastr.success('Submitted succesfully', 'Adding');
   }
 
 }
