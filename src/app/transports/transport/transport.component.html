@@ -1,0 +1,37 @@
+<h1 class="display-4">Add</h1>
+<form #form="ngForm" autocomplete="off" (submit)="onSubmit(form)">
+
+  <div class="form-group">
+    <input name="startDate" #startDate="ngModel" [(ngModel)]="service.formData.startDate" class="form-control" placeholder="Start Date" required>
+    <div *ngIf="startDate.invalid && startDate.touched" class="validation-error">This field is required.</div>
+  </div>
+  
+  <div class="form-group">
+    <input name="endDate" #endDate="ngModel" [(ngModel)]="service.formData.endDate" class="form-control" placeholder="End Date">
+  </div>
+
+  <div class="form-group">
+    <input name="category" #category="ngModel" [(ngModel)]="service.formData.category" class="form-control" placeholder="Category">
+  </div>
+
+  <div class="form-group">
+    <input name="start" #starr="ngModel" [(ngModel)]="service.formData.start" class="form-control" placeholder="Start">
+  </div>
+  
+  <div class="form-group">
+    <input name="stop" #stop="ngModel" [(ngModel)]="service.formData.stop" class="form-control" placeholder="Stop">
+  </div>
+
+  <div class="form-group">
+    <input name="miles" #miles="ngModel" [(ngModel)]="service.formData.miles" class="form-control" placeholder="Miles">
+  </div>
+
+  <div class="form-group">
+    <input name="purpose" #purpose="ngModel" [(ngModel)]="service.formData.purpose" class="form-control" placeholder="Purpose">
+  </div>
+
+  <div class="form-group">
+    <button type="submit" [disabled]="form.invalid" class="btn btn-lg btn-block btn-info">SUBMIT</button>
+  </div>
+
+</form>
