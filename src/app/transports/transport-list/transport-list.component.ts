@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { TransportService } from 'src/app/shared/transport.service';
 import { Transport } from 'src/app/shared/transport.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-transport-list',
@@ -12,7 +14,9 @@ export class TransportListComponent implements OnInit {
   list: Transport[];
 
   constructor(
-    private service: TransportService
+    private service: TransportService,
+    private firestore: AngularFirestore,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -28,6 +32,13 @@ export class TransportListComponent implements OnInit {
 
   onEdit(data: Transport) {
     this.service.formData = Object.assign({}, data);
+  }
+
+  onDelete(id: string) {
+    if (confirm('Are you sure to delete this record?')) {
+      this.firestore.doc('transport/' + id).delete();
+      this.toastr.warning('Succesfully deleted', 'Delete');
+    }
   }
 
 }

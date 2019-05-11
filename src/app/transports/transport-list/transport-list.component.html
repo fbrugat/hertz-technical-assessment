@@ -19,7 +19,7 @@
       <td (click)="onEdit(row)">{{ row.miles }}</td>
       <td (click)="onEdit(row)">{{ row.purpose }}</td>
       <td>
-        <a class="btn text-danger">
+        <a class="btn text-danger" (click)="onDelete(row.id)">
           <i class="fa fa-trash"></i>
         </a>
       </td>
