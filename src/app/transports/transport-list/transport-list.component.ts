@@ -36,9 +36,28 @@ export class TransportListComponent implements OnInit {
 
   onDelete(id: string) {
     if (confirm('Are you sure to delete this record?')) {
-      this.firestore.doc('transport/' + id).delete();
+      this.delete(id);
       this.toastr.warning('Succesfully deleted', 'Delete');
     }
+  }
+
+  onImport() {
+    if (confirm('Are you sure to import the original CSV file, this will reset the list and delete all your changes?')) {
+
+      // Delete all documents first...
+      this.list.forEach(element => {
+        this.delete(element.id);
+      });
+
+      this.toastr.warning('Succesfully deleted all previous data', 'Delete');
+
+      // Import CSV file @TODO
+
+    }
+  }
+
+  delete(id: string) {
+    this.firestore.doc('transport/' + id).delete();
   }
 
 }
