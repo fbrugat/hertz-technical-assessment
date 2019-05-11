@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TransportService } from 'src/app/shared/transport.service';
 import { NgForm } from '@angular/forms';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-transport',
@@ -10,7 +11,8 @@ import { NgForm } from '@angular/forms';
 export class TransportComponent implements OnInit {
 
   constructor(
-    private service: TransportService
+    private service: TransportService,
+    private firestore: AngularFirestore
   ) { }
 
   ngOnInit() {
@@ -32,6 +34,12 @@ export class TransportComponent implements OnInit {
       miles: 0,
       purpose: ''
     };
+  }
+
+  onSubmit(form: NgForm) {
+    const data = form.value;
+    this.firestore.collection('transport').add(data);
+    this.resetForm(form);
   }
 
 }
