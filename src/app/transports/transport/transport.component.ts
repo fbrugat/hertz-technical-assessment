@@ -39,10 +39,16 @@ export class TransportComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    const data = form.value;
-    this.firestore.collection('transport').add(data);
+    const data = Object.assign({}, form.value);
+    delete data.id;
+    if (form.value.id === null) {
+      this.firestore.collection('transport').add(data);
+      this.toastr.success('Succesfully created', 'Create');
+    } else {
+      this.firestore.doc('transport/' + form.value.id).update(data);
+      this.toastr.success('Succesfully updated', 'Update');
+    }
     this.resetForm(form);
-    this.toastr.success('Submitted succesfully', 'Adding');
   }
 
 }
