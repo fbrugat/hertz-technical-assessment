@@ -1,3 +1,28 @@
-<p>
-  transport-list works!
-</p>
+<table class="table table-hover">
+  <thead>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Category</th>
+    <th>Start</th>
+    <th>Stop</th>
+    <th>Miles</th>
+    <th>Purpose</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of list">
+      <td (click)="onEdit(row)">{{ row.startDate }}</td>
+      <td (click)="onEdit(row)">{{ row.endDate }}</td>
+      <td (click)="onEdit(row)">{{ row.category }}</td>
+      <td (click)="onEdit(row)">{{ row.start }}</td>
+      <td (click)="onEdit(row)">{{ row.stop }}</td>
+      <td (click)="onEdit(row)">{{ row.miles }}</td>
+      <td (click)="onEdit(row)">{{ row.purpose }}</td>
+      <td>
+        <a class="btn text-danger">
+          <i class="fa fa-trash"></i>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
