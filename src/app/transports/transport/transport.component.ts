@@ -26,6 +26,7 @@ export class TransportComponent implements OnInit {
       form.resetForm();
     }
 
+    // We update the formData from the shared service
     this.service.formData = {
       id: null,
       startDate: '',
@@ -39,15 +40,23 @@ export class TransportComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
+    // We make a copy using the assing to do a deep copy
     const data = Object.assign({}, form.value);
+
+    // We delete the id from the object becouse we don't need it adding or updating the doc
     delete data.id;
+
+    // If we don't have ID then we are creating a new document
     if (form.value.id === null) {
       this.firestore.collection('transport').add(data);
       this.toastr.success('Succesfully created', 'Create');
+    // Otherwise, we are updating an existing document
     } else {
       this.firestore.doc('transport/' + form.value.id).update(data);
       this.toastr.success('Succesfully updated', 'Update');
     }
+
+    // After create or update we will reset the form with the initial values
     this.resetForm(form);
   }
 

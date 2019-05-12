@@ -7,13 +7,15 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class TransportService {
 
+  // This will share the data from the form
   formData: Transport;
 
   constructor(
-    private firestor: AngularFirestore
+    private firestore: AngularFirestore
   ) { }
 
+  // We get the list from the Firestore database
   getList() {
-    return this.firestor.collection('transport').snapshotChanges();
+    return this.firestore.collection('transport').snapshotChanges();
   }
 }

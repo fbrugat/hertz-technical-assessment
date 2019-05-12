@@ -1,3 +1,4 @@
+// This is the object model transport
 export class Transport {
     id: string;
     startDate: string;

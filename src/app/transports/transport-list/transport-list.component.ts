@@ -22,8 +22,10 @@ export class TransportListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // Get the list from the shared service
     this.service.getList().subscribe(res => {
       this.list = res.map(item => {
+        // We need to add the ID because Firestore will not return the id of the document on the .data structure
         return {
           id: item.payload.doc.id,
           ...item.payload.doc.data()
@@ -33,10 +35,12 @@ export class TransportListComponent implements OnInit {
   }
 
   onEdit(data: Transport) {
+    // We do a deep copy to not update the previous object and we fill the form
     this.service.formData = Object.assign({}, data);
   }
 
   onDelete(id: string) {
+    // We display an alert
     if (confirm('Are you sure to delete this record?')) {
       this.delete(id);
       this.toastr.warning('Succesfully deleted', 'Delete');
@@ -44,22 +48,24 @@ export class TransportListComponent implements OnInit {
   }
 
   onImport() {
+    // We display an alert
     if (confirm('Are you sure to import the original CSV file? This will reset the list and you will lose all the previous changes.')) {
 
-      // Delete all documents first...
+      // We delete all documents first - Unfortunatlly Firestore has not a function to empty one collection
       this.list.forEach(element => {
         this.delete(element.id);
       });
 
-      // Import CSV file
+      // We read the CSV file from the assets folder
       this.http.get('assets/my-uber-drives-2016.csv', { responseType: 'text' })
         .subscribe(data => {
           let first = true;
 
+          // We split the documents line by line
           const lines = data.split('\r');
 
           for (const line of lines) {
-            // Except the first line
+            // Except the first line - wich is the headers
             if (first) {
               first = false;
             } else {
@@ -75,11 +81,13 @@ export class TransportListComponent implements OnInit {
                 purpose: row[6] || ''
               };
 
+              // We add the line as a document into the 'Transport' collection
               this.firestore.collection('transport').add(item);
 
             }
           }
 
+          // We display a successfull message
           this.toastr.success('List succesfully imported', 'Reset data');
 
         });
@@ -88,6 +96,7 @@ export class TransportListComponent implements OnInit {
   }
 
   delete(id: string) {
+    // We delete the document from the collection
     this.firestore.doc('transport/' + id).delete();
   }
 
