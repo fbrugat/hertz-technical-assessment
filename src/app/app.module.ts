@@ -13,6 +13,7 @@ import { TransportsComponent } from './transports/transports.component';
 import { TransportComponent } from './transports/transport/transport.component';
 import { TransportListComponent } from './transports/transport-list/transport-list.component';
 import { TransportService } from './shared/transport.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { TransportService } from './shared/transport.service';
     AngularFirestoreModule,
     FormsModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    HttpClientModule
   ],
   providers: [TransportService],
   bootstrap: [AppComponent]

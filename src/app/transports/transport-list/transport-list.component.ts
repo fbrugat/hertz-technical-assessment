@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { HttpClient } from '@angular/common/http';
 import { TransportService } from 'src/app/shared/transport.service';
 import { Transport } from 'src/app/shared/transport.model';
 import { ToastrService } from 'ngx-toastr';
@@ -16,7 +17,8 @@ export class TransportListComponent implements OnInit {
   constructor(
     private service: TransportService,
     private firestore: AngularFirestore,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
@@ -42,16 +44,45 @@ export class TransportListComponent implements OnInit {
   }
 
   onImport() {
-    if (confirm('Are you sure to import the original CSV file, this will reset the list and delete all your changes?')) {
+    if (confirm('Are you sure to import the original CSV file? This will reset the list and you will lose all the previous changes.')) {
 
       // Delete all documents first...
       this.list.forEach(element => {
         this.delete(element.id);
       });
 
-      this.toastr.warning('Succesfully deleted all previous data', 'Delete');
+      // Import CSV file
+      this.http.get('assets/my-uber-drives-2016.csv', { responseType: 'text' })
+        .subscribe(data => {
+          let first = true;
 
-      // Import CSV file @TODO
+          const lines = data.split('\r');
+
+          for (const line of lines) {
+            // Except the first line
+            if (first) {
+              first = false;
+            } else {
+              const row = line.split(',');
+
+              const item = {
+                startDate: row[0] || '',
+                endDate: row[1] || '',
+                category: row[2] || '',
+                start: row[3] || '',
+                stop: row[4] || '',
+                miles: Number(row[5]) || 0,
+                purpose: row[6] || ''
+              };
+
+              this.firestore.collection('transport').add(item);
+
+            }
+          }
+
+          this.toastr.success('List succesfully imported', 'Reset data');
+
+        });
 
     }
   }
